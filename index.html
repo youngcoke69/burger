@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="user-scalable=0">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script>
+        const linkElement = document.createElement('link');
+        linkElement.rel = 'stylesheet';
+        linkElement.type = 'text/css';
+        const timestamp = new Date().getTime();
+        const updatedCssUrl = `color.css?t=${timestamp}`;
+        linkElement.href = updatedCssUrl;
+        document.head.appendChild(linkElement);
+    </script>
+    <script>
+        function openPopup() {
+            document.getElementById('popupModal').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popupModal').style.display = 'none';
+        }
+    </script>
+</head>
+
+<body style="margin: 0;">
+    <div class="container">
+        <div class="square">
+            <div class="square-text" id="pass_month_year">
+
+            </div>
+        </div>
+        <div class="qr-square">
+            <a href="#" onclick="openPopup(); return false;">
+                <img class="qr-code" src="your-qr-code-image.png" alt="QR Code">
+            </a>
+            <div class="tap-to-enlarge">Tap to enlarge</div>
+        </div>
+    </div>
+    <div class="bip">BUS INTERSTATE PASS</div>
+    <div class="rectangle">
+        <div class="rectangle-text1" onclick="updateZoneText()">2</div>
+        <div class="rectangle-text2">ZONES</div>
+    </div>
+    <div class="bottom-container">
+        <div class="datetime" id="datetime"></div>
+        <div class="color-strip">
+            <div class="color-block red"></div>
+            <div class="color-block green"></div>
+            <div class="color-block blue"></div>
+        </div>
+        <div class="expires-text">Expires in <span id="countdown"></span></div>
+        <img class="bottom-image" src="bottom.png" alt="Bottom Image">
+
+        <div id="popupModal"
+            style="position: fixed;top: 19%;left: 52%;transform: translate(-50%, -50%);width: 100%;background-color: rgb(255, 255, 255);border: 2px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;padding: 20px 20px 20px 487px;height: 142%;display: none;">
+            <img onclick="closePopup()" src="your-qr-code-image.png" alt="QR Code"
+                style="width: 50%;object-fit: contain;padding-top: 130%;margin-bottom: 65px;">
+            <a class="back-font">Tap to go back</a>
+        </div>
+    </div>
+    <script>
+        function updateMonthAndYear() {
+            var currentDate = new Date();
+            var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            var month = monthNames[currentDate.getMonth()];
+            var year = currentDate.getFullYear();
+            var student = "STUDENT";
+            var content = month + "<br>" + year + "<br>" + student;
+            document.getElementById("pass_month_year").innerHTML = content;
+        }
+
+        function updateCountdown() {
+            const countdown = document.getElementById('countdown');
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const deadlineDate = new Date(currentDate.getFullYear(), currentMonth + 1, 1, 0, 0, 0); // Deadline is set for the start of next month
+
+            const timeRemaining = new Date(deadlineDate - currentDate);
+
+            const days = timeRemaining.getUTCDate() - 1;
+            const hours = timeRemaining.getUTCHours();
+            const minutes = timeRemaining.getUTCMinutes();
+            const seconds = timeRemaining.getUTCSeconds();
+
+            countdown.textContent = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateDateTime() {
+            const datetime = document.getElementById('datetime');
+            const currentDate = new Date();
+            const options = {
+                weekday: 'short',
+                month: 'short',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const dateTimeString = currentDate.toLocaleString('en-US', options);
+            datetime.textContent = dateTimeString.replace(" at", " ");
+        }
+        function updateZoneText() {
+            const zoneElement = document.querySelector('.rectangle-text1');
+            let currentZone = parseInt(zoneElement.textContent, 10);
+            currentZone = currentZone === 8 ? 2 : currentZone + 1;
+            zoneElement.textContent = currentZone;
+        }
+        updateMonthAndYear();
+        updateCountdown();
+        updateDateTime();
+        setInterval(updateCountdown, 1000);
+        setInterval(updateDateTime, 1000);
+    </script>
+    <div id="colorPicker"
+        style="display: none; position: absolute; top: 0px; left: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 999;">
+        <div class="color-option" style="background: #800080;" data-color="#800080" title="Purple"></div>
+        <div class="color-option" style="background: #228B22;" data-color="#228B22" title="Green"></div>
+        <div class="color-option" style="background: #808080;" data-color="#808080" title="Grey"></div>
+        <div class="color-option" style="background: #FFD700;" data-color="#FFD700" title="Yellow"></div>
+        <div class="color-option" style="background: #FF0000;" data-color="#FF0000" title="Red"></div>
+        <div class="color-option" style="background: #FF69B4;" data-color="#FF69B4" title="Pink"></div>
+        <div class="color-option" style="background: #1E90FF;" data-color="#1E90FF" title="Blue"></div>
+    </div>
+
+
+    <script>
+        document.querySelector('.square').addEventListener('click', function () {
+            const picker = document.getElementById('colorPicker');
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const selectedColor = this.getAttribute('data-color');
+                document.documentElement.style.setProperty('--first', selectedColor);
+                document.getElementById('colorPicker').style.display = 'none';
+            });
+        });
+    </script>
+
+    <!-- Picker for --stripone -->
+    <div id="iroPickerWrapper"
+        style="display:none; position: absolute; bottom: 350px; left: 20px; z-index: 999; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+        <div id="iroPicker"></div>
+        <input type="text" id="iroHex"
+            style="width: 100%; padding: 5px; margin-top: 10px; font-size: 25px; text-align: center;">
+    </div>
+
+    <!-- Picker for --striptwo -->
+    <div id="iroPickerWrapper2"
+        style="display:none; position: absolute; bottom: 350px; left: 50%; transform: translateX(-50%); z-index: 999; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+        <div id="iroPicker2"></div>
+        <input type="text" id="iroHex2"
+            style="width: 100%; padding: 5px; margin-top: 10px; font-size: 25px; text-align: center;">
+    </div>
+
+    <!-- Picker for --stripthree -->
+    <div id="iroPickerWrapper3"
+        style="display:none; position: absolute; bottom: 350px; right: 20px; z-index: 999; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+        <div id="iroPicker3"></div>
+        <input type="text" id="iroHex3"
+            style="width: 100%; padding: 5px; margin-top: 10px; font-size: 25px; text-align: center;">
+    </div>
+
+    <script>
+        // IRO picker setup
+        var colorPicker = new iro.ColorPicker("#iroPicker", {
+            layout: [
+                { component: iro.ui.Box },       // Color square (sat/light)
+                { component: iro.ui.Slider, options: { sliderType: 'hue' } } // Hue slider
+            ],
+            color: "#44dbd8",
+            width: 250,
+            borderWidth: 1,
+            borderColor: "#ccc"
+        });
+
+
+        // Update hex + CSS var from color picker
+        colorPicker.on("color:change", function (color) {
+            document.getElementById('iroHex').value = color.hexString;
+            document.documentElement.style.setProperty('--stripone', color.hexString);
+        });
+
+        // Update picker from hex input
+        document.getElementById('iroHex').addEventListener('input', function () {
+            const hex = this.value;
+            if (/^#([0-9A-F]{3}){1,2}$/i.test(hex)) {
+                colorPicker.color.hexString = hex;
+                document.documentElement.style.setProperty('--stripone', hex);
+            }
+        });
+
+        // Toggle display on red strip click
+        document.querySelector('.color-block.red').addEventListener('click', function () {
+            const picker = document.getElementById('iroPickerWrapper');
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Picker 2: --striptwo (center aligned, green bar)
+        var colorPicker2 = new iro.ColorPicker("#iroPicker2", {
+            layout: [
+                { component: iro.ui.Box },
+                { component: iro.ui.Slider, options: { sliderType: 'hue' } }
+            ],
+            color: "#bd5158",
+            width: 250,
+            borderWidth: 1,
+            borderColor: "#ccc"
+        });
+
+        colorPicker2.on("color:change", function (color) {
+            document.getElementById('iroHex2').value = color.hexString;
+            document.documentElement.style.setProperty('--striptwo', color.hexString);
+        });
+
+        document.getElementById('iroHex2').addEventListener('input', function () {
+            const hex = this.value;
+            if (/^#([0-9A-F]{3}){1,2}$/i.test(hex)) {
+                colorPicker2.color.hexString = hex;
+                document.documentElement.style.setProperty('--striptwo', hex);
+            }
+        });
+
+        // Toggle on green bar click
+        document.querySelector('.color-block.green').addEventListener('click', function () {
+            const picker = document.getElementById('iroPickerWrapper2');
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Picker 3: --stripthree (right aligned, blue bar)
+        var colorPicker3 = new iro.ColorPicker("#iroPicker3", {
+            layout: [
+                { component: iro.ui.Box },
+                { component: iro.ui.Slider, options: { sliderType: 'hue' } }
+            ],
+            color: "#cbb299",
+            width: 250,
+            borderWidth: 1,
+            borderColor: "#ccc"
+        });
+
+        colorPicker3.on("color:change", function (color) {
+            document.getElementById('iroHex3').value = color.hexString;
+            document.documentElement.style.setProperty('--stripthree', color.hexString);
+        });
+
+        document.getElementById('iroHex3').addEventListener('input', function () {
+            const hex = this.value;
+            if (/^#([0-9A-F]{3}){1,2}$/i.test(hex)) {
+                colorPicker3.color.hexString = hex;
+                document.documentElement.style.setProperty('--stripthree', hex);
+            }
+        });
+
+        // Toggle on blue bar click
+        document.querySelector('.color-block.blue').addEventListener('click', function () {
+            const picker = document.getElementById('iroPickerWrapper3');
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.addEventListener('click', function (event) {
+            const targets = [
+                { button: '.square', popup: '#colorPicker' },
+                { button: '.color-block.red', popup: '#iroPickerWrapper' },
+                { button: '.color-block.green', popup: '#iroPickerWrapper2' },
+                { button: '.color-block.blue', popup: '#iroPickerWrapper3' }
+            ];
+
+            let clickedInsideAny = false;
+
+            targets.forEach(({ button, popup }) => {
+                const btnEl = document.querySelector(button);
+                const popupEl = document.querySelector(popup);
+
+                if (
+                    btnEl.contains(event.target) ||
+                    (popupEl && popupEl.contains(event.target))
+                ) {
+                    clickedInsideAny = true;
+                } else if (popupEl) {
+                    popupEl.style.display = 'none';
+                }
+            });
+
+            // If clicked inside any popup or button, do nothing
+            if (clickedInsideAny) {
+                targets.forEach(({ popup }) => {
+                    const popupEl = document.querySelector(popup);
+                    if (popupEl && popupEl.contains(event.target)) {
+                        popupEl.style.display = 'block';
+                    }
+                });
+            }
+        });
+
+    </script>
+</body>
+
+<!-- made with love -->
+
+</html>
