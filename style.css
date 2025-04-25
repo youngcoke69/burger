@@ -231,11 +231,6 @@ a.back-font {
     transition: transform 0.2s;
 }
 
-.color-option:hover {
-    transform: scale(1.1);
-    border: 2px solid black;
-}
-
 #iroPickerWrapper {
     width: 260px;
 }
